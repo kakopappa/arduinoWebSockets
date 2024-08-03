@@ -98,6 +98,10 @@
 #define WEBSOCKETS_MAX_DATA_SIZE (15 * 1024)
 #define WEBSOCKETS_YIELD() yield()
 #define WEBSOCKETS_YIELD_MORE() delay(1)
+#define GET_FREE_HEAP() ({ \
+    char __attribute__((unused)) __top; \
+    (uint32_t)(&__top - reinterpret_cast<char*>(_sbrk(0))); \
+})
 
 #else
 
@@ -237,9 +241,11 @@
 #elif(WEBSOCKETS_NETWORK_TYPE == NETWORK_UNOWIFIR4)
 
 #include <WiFiS3.h>
-
+#include <WiFiSSLClient.h>
+#define SSL_AXTLS
 #define WEBSOCKETS_NETWORK_CLASS WiFiClient
 #define WEBSOCKETS_NETWORK_SERVER_CLASS WiFiServer
+#define WEBSOCKETS_NETWORK_SSL_CLASS WiFiSSLClient
 
 #else
 #error "no network type selected!"

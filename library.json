@@ -21,5 +21,10 @@
         "type": "git",
         "url": "https://github.com/Links2004/arduinoWebSockets.git"
     },
+<<<<<<< HEAD
     "version": "2.5.1"
 }
+=======
+    "version": "2.5.2"
+}
+>>>>>>> dc6fd04a9874a66a089f02ad18f5a9e7dc7c349f

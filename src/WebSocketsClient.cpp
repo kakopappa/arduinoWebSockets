@@ -244,11 +244,7 @@ void WebSocketsClient::loop(void) {
         if(_client.isSSL) {
             DEBUG_WEBSOCKETS("[WS-Client] connect wss...\n");
             if(_client.ssl) {
-                #if defined(WIO_TERMINAL) || defined(SEEED_XIAO_M0)
-                    // does not support delete (no destructor)
-                #elif
-                    delete _client.ssl;
-                #endif
+                delete _client.ssl;
                 
                 _client.ssl = NULL;
                 _client.tcp = NULL;
@@ -292,11 +288,7 @@ void WebSocketsClient::loop(void) {
         } else {
             DEBUG_WEBSOCKETS("[WS-Client] connect ws...\n");
             if(_client.tcp) {
-                #if defined(WIO_TERMINAL) || defined(SEEED_XIAO_M0)
-                    // does not support delete (no destructor)
-                #elif
                 delete _client.tcp;
-                #endif
                 _client.tcp = NULL;
             }
             _client.tcp = new WEBSOCKETS_NETWORK_CLASS();
@@ -547,11 +539,7 @@ void WebSocketsClient::clientDisconnect(WSclient_t * client) {
 #if(WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266_ASYNC)
         client->status = WSC_NOT_CONNECTED;
 #else
-        #if(WEBSOCKETS_NETWORK_TYPE == NETWORK_WIFI_NINA || WEBSOCKETS_NETWORK_TYPE == NETWORK_SAMD_SEED)
-            // does not support delete (no destructor)
-        #else
-            delete client->tcp;
-        #endif
+        delete client->tcp;
 #endif
         client->tcp = NULL;
     }

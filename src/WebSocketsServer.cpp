@@ -65,11 +65,7 @@ WebSocketsServerCore::~WebSocketsServerCore() {
 }
 
 WebSocketsServer::~WebSocketsServer() {
-    #if(WEBSOCKETS_NETWORK_TYPE == NETWORK_WIFI_NINA || WEBSOCKETS_NETWORK_TYPE == NETWORK_SAMD_SEED)
-        // does not support delete (no destructor)
-    #else
-        delete _server;
-    #endif    
+    delete _server;  
 }
 
 /**
@@ -543,9 +539,6 @@ void WebSocketsServerCore::dropNativeClient(WSclient_t * client) {
         }
 #if(WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266_ASYNC)
         client->status = WSC_NOT_CONNECTED;
-#elif(WEBSOCKETS_NETWORK_TYPE == NETWORK_WIFI_NINA || WEBSOCKETS_NETWORK_TYPE == NETWORK_SAMD_SEED)
-        // does not support delete (no destructor)
-#else
         delete client->tcp;
 #endif
         client->tcp = NULL;

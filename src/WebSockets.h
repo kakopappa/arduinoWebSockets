@@ -271,6 +271,11 @@
     #error "Please install WiFiNINA library!"
 #endif
 
+class WiFiNINAClient : public WiFiClient {
+public:
+    virtual ~WiFiNINAClient() = default;
+};
+
 #define WEBSOCKETS_NETWORK_CLASS WiFiClient
 #define WEBSOCKETS_NETWORK_SERVER_CLASS WiFiServer
 
@@ -282,9 +287,21 @@
     #error "Please install rpcWiFi library!"
 #endif
 
-#define WEBSOCKETS_NETWORK_CLASS WiFiClient
+class rpcWiFiClient : public WiFiClient {
+public:
+    rpcWiFiClient() = default;
+    rpcWiFiClient(int fd) : WiFiClient(fd) {}
+    virtual ~rpcWiFiClient() = default;
+};
+
+class rpcWiFiClientSecure : public rpcWiFiClient, public WiFiClientSecure {
+public:
+    rpcWiFiClientSecure() : rpcWiFiClient(), WiFiClientSecure() {}
+};
+
+#define WEBSOCKETS_NETWORK_CLASS rpcWiFiClient
 #define WEBSOCKETS_NETWORK_SERVER_CLASS WiFiServer
-#define WEBSOCKETS_NETWORK_SSL_CLASS WiFiClientSecure
+#define WEBSOCKETS_NETWORK_SSL_CLASS rpcWiFiClientSecure
 
 #else
 #error "no network type selected!"

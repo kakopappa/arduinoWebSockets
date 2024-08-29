@@ -1,0 +1,10 @@
+version: "2.6.0"
+description: >-
+  Websockets for micro-controllers.
+url: https://sinric.pro/
+files:
+  exclude:
+    - "**/.vs/**/*"
+    - ".devcontainer/**/*"
+    - "examples/**/*"
+    - "extras/**/*"

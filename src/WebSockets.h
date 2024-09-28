@@ -39,7 +39,7 @@
 #else
 #include <functional>
 #endif
-
+#include <stdarg.h> // Required for va_list, va_start, va_end
 #include "WebSocketsVersion.h"
 
 #ifndef NODEBUG_WEBSOCKETS
@@ -50,9 +50,21 @@
         DEBUG_ESP_PORT.flush();             \
     }
 #else
-// #define DEBUG_WEBSOCKETS(...) os_printf( __VA_ARGS__ )
+ 
+#define DEBUG_WEBSOCKETS(format, ...) \
+    [&]() -> size_t { \
+        char buf[256]; /* Adjust buffer size as needed */ \
+        size_t ret = snprintf(buf, sizeof(buf), format, ##__VA_ARGS__); \
+        Serial.print(buf); \
+        return ret; \
+    }()
+ 
 #endif
 #endif
+
+
+
+
 
 #ifndef DEBUG_WEBSOCKETS
 #define DEBUG_WEBSOCKETS(...)
